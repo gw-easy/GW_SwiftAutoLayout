@@ -101,7 +101,7 @@
 			children = (
 				C47F938D2507AE440081454A /* AppDelegate.swift */,
 				C47F93912507AE440081454A /* ViewController.swift */,
-				C47F93BD2507B15B0081454A /* GWSwiftAutoLayout.swift */,
+				C4BD8E85250EF22700243C4E /* GWSwiftAutoLayoutKit */,
 				C47F93932507AE440081454A /* Main.storyboard */,
 				C47F93962507AE470081454A /* Assets.xcassets */,
 				C47F93982507AE470081454A /* LaunchScreen.storyboard */,
@@ -126,6 +126,14 @@
 				C47F93B12507AE470081454A /* Info.plist */,
 			);
 			path = GW_SwiftAutoLayoutUITests;
+			sourceTree = "<group>";
+		};
+		C4BD8E85250EF22700243C4E /* GWSwiftAutoLayoutKit */ = {
+			isa = PBXGroup;
+			children = (
+				C47F93BD2507B15B0081454A /* GWSwiftAutoLayout.swift */,
+			);
+			path = GWSwiftAutoLayoutKit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

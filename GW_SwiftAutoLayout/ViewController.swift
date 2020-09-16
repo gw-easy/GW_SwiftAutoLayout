@@ -20,19 +20,17 @@ class ViewController: UIViewController {
         view2.backgroundColor = UIColor.green
         view.addSubview(view1)
         self.view.addSubview(view2)
-        
-        view1.GWTop(100)
-        .GWLeft(10)
-        .GWRight(10)
-        .GWBottom(100)
+//        view1.GWTop(10, true)
+//        .GWLeft(10, true)
+//        .GWRight(10, true)
+//        .GWBottom(0, true)
     
-//        view2.GWLeft(20)
-//        .GWTop(200)
-//        .GWRight(100)
-//        .GWBottom(200)
-//
-//        view2.GWBottom(10)
-//        .GWLeft(100)
+        
+        view1.GWTop(10, true)
+        .GWLeft(10, true)
+        .GWRight(10, true)
+        .GWBottom(0, true)
+
         
         let textV:UITextView = UITextView()
         
@@ -53,7 +51,13 @@ class ViewController: UIViewController {
         textV.GWLeft(0)
         .GWTop(0)
         .GWRight(0)
-        .GWHeightAuto()
+            .GWHeightAuto()
+        textV.superview?.layoutIfNeeded()
+        
+        if textV.bounds.size.height > 80 {
+            textV.GWHeight(80)
+            textV.isScrollEnabled = true
+        }
     }
 
 

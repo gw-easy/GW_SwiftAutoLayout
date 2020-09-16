@@ -60,18 +60,6 @@ enum ConstraintRelation : Int {
 }
 
 extension GWLayoutAttribute{
-//    var AttributeGetlessThanOrEqual:GWLayoutAttribute{
-//        get{
-//            return GWLayoutAttribute(rawValue: rawValue+1000) ?? self;
-//        }
-//    }
-//
-//    var AttributeGreaterThanOrEqual:GWLayoutAttribute{
-//        get{
-//            return GWLayoutAttribute(rawValue: rawValue+2000) ?? self;
-//        }
-//    }
-    
     func GWGetAttributeValue(_ relation:GWLayoutRelation) -> GWLayoutAttribute {
         switch relation {
             case .lessThanOrEqual:
@@ -82,7 +70,6 @@ extension GWLayoutAttribute{
                 return self
         }
     }
-
 }
 
 public protocol GWMainLayout:AnyObject{
@@ -95,14 +82,9 @@ extension GWLayoutGuide:GWMainLayout{
 
 extension GWView:GWMainLayout{
     public typealias GWSelf = GWView
-    
-   
-    
 }
 
-public protocol GWLayoutConstraint{
-    
-}
+public protocol GWLayoutConstraint{}
 
 //MARK:  /////////////////////////////////  布局UI  ////////////////////////////////////
 extension GWMainLayout{
@@ -167,7 +149,7 @@ extension GWMainLayout{
    /// - Parameter isSafe: 是否采用安全边界
    /// - Returns: 返回当前视图
    @discardableResult
-   public func GWBottom(_ space: CGFloat,toView: AnyObject? = nil, _ isSafe: Bool = false) -> Self {
+   public func GWBottom(_ space: CGFloat, _ isSafe: Bool = false) -> Self {
        let sview = GWGetSuperview()
        #if os(iOS)
            if #available(iOS 11.0, *) , isSafe  {
@@ -244,7 +226,7 @@ extension GWMainLayout{
    /// - Parameter isSafe: 是否采用安全边界
    /// - Returns: 返回当前视图
    @discardableResult
-   public func GWRight(_ space: CGFloat,toView: AnyObject? = nil, _ isSafe: Bool = false) -> Self {
+   public func GWRight(_ space: CGFloat,_ isSafe: Bool = false) -> Self {
        let sview = GWGetSuperview()
        #if os(iOS)
            if #available(iOS 11.0, *) , isSafe  {
@@ -719,9 +701,7 @@ extension GWMainLayout{
         }
         
         switch firstAttribute {
- 
             case .top:
-                 
                 if let firstBaseline = self.GWGetCuttentLayoutConstraint(.firstBaseline) {
                     GWRemoveCache(constraint: firstBaseline)
                     self.GWRemoveLayoutConstraint(constraints: [GWLayoutAttribute.firstBaseline.rawValue:firstBaseline])
@@ -734,7 +714,6 @@ extension GWMainLayout{
                     GWRemoveCache(constraint: firstBaseline)
                     self.GWRemoveLayoutConstraint(constraints: [GWLayoutAttribute.firstBaseline.GWGetAttributeValue(.greaterThanOrEqual).rawValue:firstBaseline])
                 }
-                
                 break
             case .bottom:
                 if let lastBaseline = self.GWGetCuttentLayoutConstraint(.lastBaseline) {
@@ -749,9 +728,7 @@ extension GWMainLayout{
                     GWRemoveCache(constraint: lastBaseline)
                     self.GWRemoveLayoutConstraint(constraints: [GWLayoutAttribute.lastBaseline.GWGetAttributeValue(.greaterThanOrEqual).rawValue:lastBaseline])
                 }
-                
                 break
-            
             case .lastBaseline:
                 if let bottom = self.GWGetCuttentLayoutConstraint(.bottom) {
                     GWRemoveCache(constraint: bottom)
@@ -765,7 +742,6 @@ extension GWMainLayout{
                     GWRemoveCache(constraint: bottom)
                     self.GWRemoveLayoutConstraint(constraints: [GWLayoutAttribute.bottom.GWGetAttributeValue(.greaterThanOrEqual).rawValue:bottom])
                 }
-                
                 break
             case .firstBaseline:
                 if let top = self.GWGetCuttentLayoutConstraint(.top) {
@@ -780,11 +756,9 @@ extension GWMainLayout{
                     GWRemoveCache(constraint: top)
                     self.GWRemoveLayoutConstraint(constraints: [GWLayoutAttribute.top.GWGetAttributeValue(.greaterThanOrEqual).rawValue:top])
                 }
-                
                 break
             default:
                 break
-            
         }
         
         if item == nil {
@@ -886,6 +860,41 @@ extension GWMainLayout{
                 return d1
             }else if data.1 && data.0 == nil {
                 return GWGetView(view2)
+            }
+        }else if #available(iOS 9.0, *) {
+            if isView1 && !isView2 {
+                if view1 != nil {
+                    let s_view = GWGetView(view1)
+                    let s_guide = GWGetLayoutGuide(view2)
+                    if s_view === s_guide?.owningView {
+                        return s_view
+                    }else {
+                        if s_view?.superview === s_guide?.owningView {
+                            return s_view?.superview
+                        }
+                        return GWMainSuperView(view1: s_view?.superview, view2: s_guide?.owningView)
+                    }
+                }
+                return GWGetOwningview(view2);
+            }else if !isView1 && isView2 {
+                if view2 != nil {
+                    let s_view = GWGetView(view2)
+                    let s_guide = GWGetLayoutGuide(view1)
+                    if s_view === s_guide?.owningView {
+                        return s_view
+                    }else {
+                        if s_view?.superview === s_guide?.owningView {
+                            return s_view?.superview
+                        }
+                        return GWMainSuperView(view1: s_view?.superview, view2: s_guide?.owningView)
+                    }
+                }
+                return GWGetOwningview(view1)
+            }else {
+                if GWGetOwningview(view1) === GWGetOwningview(view2) {
+                    return GWGetOwningview(view1)
+                }
+                return GWMainSuperView(view1: GWGetOwningview(view1), view2: GWGetOwningview(view2))
             }
         }
         return nil
@@ -1032,13 +1041,11 @@ extension GWMainLayout{
     }
     
     fileprivate func GWAddLayoutConstraint(constraints: [Int:NSLayoutConstraint]) {
-        let constraintsSet = self.GWConstraintsSet
-        constraintsSet.add(constraints)
+        self.GWConstraintsSet.add(constraints)
     }
     
     fileprivate func GWRemoveLayoutConstraint(constraints: [Int:NSLayoutConstraint]) {
-        let constraintsSet = self.GWConstraintsSet
-        constraintsSet.remove(constraints)
+        self.GWConstraintsSet.remove(constraints)
     }
     
     fileprivate var GWConstraintsSet: NSMutableSet {
