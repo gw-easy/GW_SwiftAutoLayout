@@ -531,6 +531,7 @@ extension GWMainLayout{
    ///
    /// - Parameter view: 相对视图
    /// - Returns: 返回当前视图
+    @discardableResult
    public func GWFrameEqual(_ view: AnyObject?) -> Self {
        return self.GWLeftEqual(view).GWTopEqual(view).GWSizeEqual(view)
    }
@@ -539,6 +540,7 @@ extension GWMainLayout{
     ///
     /// - Parameter view: 相对视图
     /// - Returns: 返回当前视图
+    @discardableResult
     public func GWBoundsEqual(_ view: AnyObject?) -> Self {
         return self.GWLeftEqual(view).GWTopEqual(view).GWRightEqual(view).GWBottomEqual(view)
     }
