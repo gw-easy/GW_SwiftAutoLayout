@@ -26,8 +26,8 @@
             filePath = "GW_SwiftAutoLayout/GWSwiftAutoLayoutKit/GWSwiftAutoLayout.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "873"
-            endingLineNumber = "873"
+            startingLineNumber = "881"
+            endingLineNumber = "881"
             landmarkName = "GWMainSuperView(view1:view2:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -42,8 +42,8 @@
             filePath = "GW_SwiftAutoLayout/GWSwiftAutoLayoutKit/GWSwiftAutoLayout.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "875"
-            endingLineNumber = "875"
+            startingLineNumber = "883"
+            endingLineNumber = "883"
             landmarkName = "GWMainSuperView(view1:view2:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,8 +58,8 @@
             filePath = "GW_SwiftAutoLayout/GWSwiftAutoLayoutKit/GWSwiftAutoLayout.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "878"
-            endingLineNumber = "878"
+            startingLineNumber = "886"
+            endingLineNumber = "886"
             landmarkName = "GWMainSuperView(view1:view2:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -68,54 +68,6 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "571E1768-BF93-450E-8217-E57F330B725D"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "GW_SwiftAutoLayout/GWSwiftAutoLayoutKit/GWSwiftAutoLayout.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "889"
-            endingLineNumber = "889"
-            landmarkName = "GWMainSuperView(view1:view2:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "03A75F4F-AD7F-4DE1-BB5A-AEBB70264895"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "GW_SwiftAutoLayout/GWSwiftAutoLayoutKit/GWSwiftAutoLayout.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "892"
-            endingLineNumber = "892"
-            landmarkName = "GWMainSuperView(view1:view2:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "51648D47-5678-4634-B855-497E10FD78CB"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "GW_SwiftAutoLayout/GWSwiftAutoLayoutKit/GWSwiftAutoLayout.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "895"
-            endingLineNumber = "895"
-            landmarkName = "GWMainSuperView(view1:view2:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "5BF7729A-734F-4208-B31D-51ADC56F6819"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -131,6 +83,54 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+            uuid = "03A75F4F-AD7F-4DE1-BB5A-AEBB70264895"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GW_SwiftAutoLayout/GWSwiftAutoLayoutKit/GWSwiftAutoLayout.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "900"
+            endingLineNumber = "900"
+            landmarkName = "GWMainSuperView(view1:view2:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "51648D47-5678-4634-B855-497E10FD78CB"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GW_SwiftAutoLayout/GWSwiftAutoLayoutKit/GWSwiftAutoLayout.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "903"
+            endingLineNumber = "903"
+            landmarkName = "GWMainSuperView(view1:view2:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5BF7729A-734F-4208-B31D-51ADC56F6819"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GW_SwiftAutoLayout/GWSwiftAutoLayoutKit/GWSwiftAutoLayout.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "905"
+            endingLineNumber = "905"
+            landmarkName = "GWMainSuperView(view1:view2:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
             uuid = "15580F2F-A1BF-4302-9DD8-8EF49A6E180D"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -138,8 +138,8 @@
             filePath = "GW_SwiftAutoLayout/GWSwiftAutoLayoutKit/GWSwiftAutoLayout.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "870"
-            endingLineNumber = "870"
+            startingLineNumber = "878"
+            endingLineNumber = "878"
             landmarkName = "GWMainSuperView(view1:view2:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -154,8 +154,8 @@
             filePath = "GW_SwiftAutoLayout/GWSwiftAutoLayoutKit/GWSwiftAutoLayout.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "887"
-            endingLineNumber = "887"
+            startingLineNumber = "895"
+            endingLineNumber = "895"
             landmarkName = "GWMainSuperView(view1:view2:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -170,8 +170,8 @@
             filePath = "GW_SwiftAutoLayout/GWSwiftAutoLayoutKit/GWSwiftAutoLayout.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "884"
-            endingLineNumber = "884"
+            startingLineNumber = "892"
+            endingLineNumber = "892"
             landmarkName = "GWMainSuperView(view1:view2:)"
             landmarkType = "7">
          </BreakpointContent>

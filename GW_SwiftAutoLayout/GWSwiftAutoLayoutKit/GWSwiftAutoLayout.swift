@@ -256,7 +256,7 @@ extension GWMainLayout{
    ///   - offset: 偏移量 默认0
    /// - Returns: 返回当前视图
    @discardableResult
-   public func GWRightEqual(_ toView: AnyObject?, offset: CGFloat) -> Self {
+   public func GWRightEqual(_ toView: AnyObject?, offset: CGFloat = 0) -> Self {
        let toAttribute = GWLayoutAttribute.right
        return self.GWConstraintWithItem(self, attribute: .right, toItem: toView, toAttribute: toAttribute, constant: 0.0 - offset)
    }
@@ -535,6 +535,14 @@ extension GWMainLayout{
        return self.GWLeftEqual(view).GWTopEqual(view).GWSizeEqual(view)
    }
    
+    /// 设置bounds与view相同
+    ///
+    /// - Parameter view: 相对视图
+    /// - Returns: 返回当前视图
+    public func GWBoundsEqual(_ view: AnyObject?) -> Self {
+        return self.GWLeftEqual(view).GWTopEqual(view).GWRightEqual(view).GWBottomEqual(view)
+    }
+    
    /// 设置size
    ///
    /// - Parameters:
