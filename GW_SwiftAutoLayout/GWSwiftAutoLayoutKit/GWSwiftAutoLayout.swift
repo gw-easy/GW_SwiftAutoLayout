@@ -22,8 +22,8 @@ import Foundation
     typealias GWConstraintAxis = NSLayoutConstraint.Axis
     typealias GWLayoutPriority = UILayoutPriority
 
-@available(iOS 9.0, *)
-public typealias GWLayoutGuide = UILayoutGuide
+    @available(iOS 9.0, *)
+    public typealias GWLayoutGuide = UILayoutGuide
 #else
     import AppKit
     public typealias GWView = NSView
@@ -32,8 +32,8 @@ public typealias GWLayoutGuide = UILayoutGuide
     public typealias GWLayoutAttribute = NSLayoutConstraint.Attribute
     typealias GWLayoutPriority = NSLayoutConstraint.Priority
     typealias GWConstraintAxis = NSLayoutConstraint.Orientation
-@available(OSX 10.11, *)
-public typealias GWLayoutGuide = UILayoutGuide
+    @available(OSX 10.11, *)
+    public typealias GWLayoutGuide = UILayoutGuide
 #endif
 
 private var GWConstraintsKey: UInt8 = 88
@@ -44,7 +44,7 @@ enum ConstraintRelation : Int {
     case equal = 1
     case lessThanOrEqual
     case greaterThanOrEqual
-    
+
     internal var GWLayoutRelation: GWLayoutRelation {
         get {
             switch(self) {
@@ -88,28 +88,28 @@ public protocol GWLayoutConstraint{}
 
 //MARK:  /////////////////////////////////  布局UI  ////////////////////////////////////
 extension GWMainLayout{
-   /// 设置当前约束小于等于
-   ///
-   /// - Returns: 当前视图
-   @discardableResult
-   public func GWLessOrEqual() -> Self {
+    /// 设置当前约束小于等于
+    ///
+    /// - Returns: 当前视图
+    @discardableResult
+    public func GWLessOrEqual() -> Self {
        return GWHandleConstraintsRelation(.lessThanOrEqual)
-   }
-   
-   /// 设置当前约束大于等于
-   ///
-   /// - Returns: 当前视图
-   @discardableResult
-   public func GWGreaterOrEqual() -> Self {
+    }
+
+    /// 设置当前约束大于等于
+    ///
+    /// - Returns: 当前视图
+    @discardableResult
+    public func GWGreaterOrEqual() -> Self {
        return GWHandleConstraintsRelation(.greaterThanOrEqual)
-   }
-   /// 设置顶边距(默认相对父视图)
-   ///
-   /// - Parameter space: 顶边距
-   /// - Parameter isSafe: 是否采用安全边界
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWTop(_ space: CGFloat, _ isSafe: Bool = false) -> Self {
+    }
+    /// 设置顶边距(默认相对父视图)
+    ///
+    /// - Parameter space: 顶边距
+    /// - Parameter isSafe: 是否采用安全边界
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWTop(_ space: CGFloat, _ isSafe: Bool = false) -> Self {
        let sview = GWGetSuperview()
        #if os(iOS)
        if #available(iOS 11.0, *) , isSafe {
@@ -117,39 +117,57 @@ extension GWMainLayout{
            }
        #endif
        return self.GWConstraintWithItem(self, attribute: .top, toItem: sview, toAttribute: .top, constant: space)
-   }
-   /// 设置顶边距与指定视图 - 不能是父试图
-   ///
-   /// - Parameters:
-   ///   - space: 顶边距
-   ///   - toView: 相对视图
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWTop(_ space: CGFloat,toView: AnyObject?) -> Self {
+    }
+    /// 设置顶边距与指定视图 - 不能是父试图
+    ///
+    /// - Parameters:
+    ///   - space: 顶边距
+    ///   - toView: 相对视图
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWTop(_ space: CGFloat,toView: AnyObject?) -> Self {
        var toAttribute = GWLayoutAttribute.bottom
        if !GWSameSuperView(view1: toView, view2: self).1 {
            toAttribute = .top
        }
        return self.GWConstraintWithItem(self, attribute: .top, toItem: toView, toAttribute: toAttribute, constant: space)
-   }
-   /// 设置顶边距相等并偏移与指定视图
-   ///
-   /// - Parameters:
-   ///   - view: 相对视图
-   ///   - offset: 偏移量 默认0
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWTopEqual(_ toView: AnyObject?,offset: CGFloat=0) -> Self {
-       let toAttribute = GWLayoutAttribute.top
-       return self.GWConstraintWithItem(self, attribute: .top, toItem: toView, toAttribute: toAttribute, constant: offset)
-   }
-   /// 设置底边距(默认相对父视图)
-   ///
-   /// - Parameter space: 底边距
-   /// - Parameter isSafe: 是否采用安全边界
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWBottom(_ space: CGFloat, _ isSafe: Bool = false) -> Self {
+    }
+    /// 设置顶边距相等并偏移与指定视图
+    ///
+    /// - Parameters:
+    ///   - view: 相对视图
+    ///   - offset: 偏移量 默认0
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWTopEqual(_ toView: AnyObject?,offset: CGFloat=0,needBaseLine:Bool=false) -> Self {
+        let toAttribute = GWLayoutAttribute.top
+        return self.GWConstraintWithItem(self, attribute: .top, toItem: toView, toAttribute: toAttribute, constant: offset)
+    }
+
+
+    /// 设置顶边距与指定视图j基线的距离 - 不能是父试图
+    /// - Parameters:
+    ///   - space: 顶边距
+    ///   - toView: 相对视图
+    ///   - font: 自身font
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWTopBaseLine(_ space: CGFloat,toView: AnyObject?,font:UIFont?=nil) -> Self {
+        let toAttribute = GWLayoutAttribute.lastBaseline
+        var offset = space
+        if font != nil {
+            offset -= font?.GWFontBaseTopY() ?? 0
+        }
+        return self.GWConstraintWithItem(self, attribute: .top, toItem: toView, toAttribute: toAttribute, constant: space)
+    }
+
+    /// 设置底边距(默认相对父视图)
+    ///
+    /// - Parameter space: 底边距
+    /// - Parameter isSafe: 是否采用安全边界
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWBottom(_ space: CGFloat, _ isSafe: Bool = false) -> Self {
        let sview = GWGetSuperview()
        #if os(iOS)
            if #available(iOS 11.0, *) , isSafe  {
@@ -157,36 +175,36 @@ extension GWMainLayout{
            }
        #endif
        return self.GWConstraintWithItem(self, attribute: .bottom, toItem: sview, toAttribute: .bottom, constant: 0-space)
-   }
-   /// 设置底边距与指定视图 - 不能是父试图
-   ///
-   /// - Parameters:
-   ///   - space: 底边距
-   ///   - toView: 相对视图
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWBottom(_ space: CGFloat, toView: AnyObject?) -> Self {
+    }
+    /// 设置底边距与指定视图 - 不能是父试图
+    ///
+    /// - Parameters:
+    ///   - space: 底边距
+    ///   - toView: 相对视图
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWBottom(_ space: CGFloat, toView: AnyObject?) -> Self {
        let toAttribute = GWLayoutAttribute.top
        return self.GWConstraintWithItem(self, attribute: .bottom, toItem: toView, toAttribute: toAttribute, constant: space)
-   }
-   /// 设置底边距相等并偏移与指定视图
-   ///
-   /// - Parameters:
-   ///   - view: 相对视图
-   ///   - offset: 偏移量 默认0
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWBottomEqual(_ toView: AnyObject?, offset: CGFloat = 0) -> Self {
+    }
+    /// 设置底边距相等并偏移与指定视图
+    ///
+    /// - Parameters:
+    ///   - view: 相对视图
+    ///   - offset: 偏移量 默认0
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWBottomEqual(_ toView: AnyObject?, offset: CGFloat = 0) -> Self {
        let toAttribute = GWLayoutAttribute.bottom
        return self.GWConstraintWithItem(self, attribute: .bottom, toItem: toView, toAttribute: toAttribute, constant: 0.0 - offset)
-   }
-   /// 设置左边距(默认相对父视图)
-   ///
-   /// - Parameter space: 左边距
-   /// - Parameter isSafe: 是否采用安全边界
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWLeft(_ space: CGFloat, _ isSafe: Bool = false) -> Self {
+    }
+    /// 设置左边距(默认相对父视图)
+    ///
+    /// - Parameter space: 左边距
+    /// - Parameter isSafe: 是否采用安全边界
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWLeft(_ space: CGFloat, _ isSafe: Bool = false) -> Self {
       let sview = GWGetSuperview()
       #if os(iOS)
           if #available(iOS 11.0, *) , isSafe  {
@@ -194,39 +212,39 @@ extension GWMainLayout{
           }
       #endif
            return self.GWConstraintWithItem(self, attribute: .left, toItem: sview, toAttribute: .left, constant: space)
-   }
-   /// 设置左边距与指定视图
-   ///
-   /// - Parameters:
-   ///   - space: 左边距
-   ///   - toView: 相对视图
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWLeft(_ space: CGFloat, toView: AnyObject?) -> Self {
+    }
+    /// 设置左边距与指定视图
+    ///
+    /// - Parameters:
+    ///   - space: 左边距
+    ///   - toView: 相对视图
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWLeft(_ space: CGFloat, toView: AnyObject?) -> Self {
        var toAttribute = GWLayoutAttribute.right
        if !GWSameSuperView(view1: toView, view2: self).1 {
            toAttribute = .left
        }
        return self.GWConstraintWithItem(self, attribute: .left, toItem: toView, toAttribute: toAttribute, constant: space)
-   }
-   /// 设置左边距相等并偏移与指定视图
-   ///
-   /// - Parameters:
-   ///   - view: 相对视图
-   ///   - offset: 偏移量 默认0
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWLeftEqual(_ toView: AnyObject?, offset: CGFloat = 0) -> Self {
+    }
+    /// 设置左边距相等并偏移与指定视图
+    ///
+    /// - Parameters:
+    ///   - view: 相对视图
+    ///   - offset: 偏移量 默认0
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWLeftEqual(_ toView: AnyObject?, offset: CGFloat = 0) -> Self {
        let toAttribute = GWLayoutAttribute.left
        return self.GWConstraintWithItem(self, attribute: .left, toItem: toView, toAttribute: toAttribute, constant: offset)
-   }
-   /// 设置右边距(默认相对父视图)
-   ///
-   /// - Parameter space: 右边距
-   /// - Parameter isSafe: 是否采用安全边界
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWRight(_ space: CGFloat,_ isSafe: Bool = false) -> Self {
+    }
+    /// 设置右边距(默认相对父视图)
+    ///
+    /// - Parameter space: 右边距
+    /// - Parameter isSafe: 是否采用安全边界
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWRight(_ space: CGFloat,_ isSafe: Bool = false) -> Self {
        let sview = GWGetSuperview()
        #if os(iOS)
            if #available(iOS 11.0, *) , isSafe  {
@@ -234,57 +252,57 @@ extension GWMainLayout{
            }
        #endif
            return self.GWConstraintWithItem(self, attribute: .right, toItem: sview, toAttribute: .right, constant: 0-space)
-   }
-   /// 设置右边距与指定视图
-   ///
-   /// - Parameters:
-   ///   - space: 右边距
-   ///   - toView: 相对视图
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWRight(_ space: CGFloat, toView: AnyObject?) -> Self {
+    }
+    /// 设置右边距与指定视图
+    ///
+    /// - Parameters:
+    ///   - space: 右边距
+    ///   - toView: 相对视图
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWRight(_ space: CGFloat, toView: AnyObject?) -> Self {
        var toAttribute = GWLayoutAttribute.left
        if !GWSameSuperView(view1: toView, view2: self).1 {
            toAttribute = .right
        }
        return self.GWConstraintWithItem(self, attribute: .right, toItem: toView, toAttribute: toAttribute, constant: 0-space)
-   }
-   /// 设置右边距相等并偏移与指定视图
-   ///
-   /// - Parameters:
-   ///   - view: 相对视图
-   ///   - offset: 偏移量 默认0
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWRightEqual(_ toView: AnyObject?, offset: CGFloat = 0) -> Self {
+    }
+    /// 设置右边距相等并偏移与指定视图
+    ///
+    /// - Parameters:
+    ///   - view: 相对视图
+    ///   - offset: 偏移量 默认0
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWRightEqual(_ toView: AnyObject?, offset: CGFloat = 0) -> Self {
        let toAttribute = GWLayoutAttribute.right
        return self.GWConstraintWithItem(self, attribute: .right, toItem: toView, toAttribute: toAttribute, constant: 0.0 - offset)
-   }
-   /// 设置宽度
-   ///
-   /// - Parameter width: 宽度
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWWidth(_ width: CGFloat) -> Self {
+    }
+    /// 设置宽度
+    ///
+    /// - Parameter width: 宽度
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWWidth(_ width: CGFloat) -> Self {
        let toAttribute = GWLayoutAttribute.notAnAttribute
        return self.GWConstraintWithItem(self, attribute: .width, toItem: nil, toAttribute: toAttribute, constant: width)
-   }
-   
-   /// 设置宽度按比例相等与指定视图
-   ///
-   /// - Parameters:
-   ///   - view: 相对视图
-   ///   - ratio: 比例 默认是1
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWWidthEqual(_ toView: AnyObject?, ratio: CGFloat = 1) -> Self {
+    }
+
+    /// 设置宽度按比例相等与指定视图
+    ///
+    /// - Parameters:
+    ///   - view: 相对视图
+    ///   - ratio: 比例 默认是1
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWWidthEqual(_ toView: AnyObject?, ratio: CGFloat = 1) -> Self {
        return self.GWConstraintWithItem(self, attribute: .width, toItem: toView, toAttribute: .width, constant: 0, related: .equal, multiplier: ratio)
-   }
-   /// 设置自动宽度
-   ///
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWWidthAuto() -> Self {
+    }
+    /// 设置自动宽度
+    ///
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWWidthAuto() -> Self {
        #if os(iOS) || os(tvOS)
            if let label = self as? UILabel,label.numberOfLines == 0{
                label.numberOfLines = 1
@@ -296,42 +314,42 @@ extension GWMainLayout{
        }
        let toAttribute = GWLayoutAttribute.notAnAttribute
        return self.GWConstraintWithItem(self, attribute: .width, toItem: nil, toAttribute: toAttribute, constant: 0, related: .greaterThanOrEqual, multiplier: 1)
-   }
-   /// 设置视图自身高度与宽度的比
-   ///
-   /// - Parameter ratio: 比例
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWHeightWidthRatio(_ ratio: CGFloat) -> Self {
+    }
+    /// 设置视图自身高度与宽度的比
+    ///
+    /// - Parameter ratio: 比例
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWHeightWidthRatio(_ ratio: CGFloat) -> Self {
        let toAttribute = GWLayoutAttribute.width
        return self.GWConstraintWithItem(self, attribute: .height, toItem: self, toAttribute: toAttribute, constant: 0, related: .equal, multiplier: ratio)
-   }
-   /// 设置高度
-   ///
-   /// - Parameter height: 高度
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWHeight(_ height: CGFloat) -> Self {
+    }
+    /// 设置高度
+    ///
+    /// - Parameter height: 高度
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWHeight(_ height: CGFloat) -> Self {
        return self.GWConstraintWithItem(self, attribute: .height, toItem: nil, toAttribute: .height, constant: height)
-   }
-   
-   
-   /// 设置高度按比例相等与指定视图
-   ///
-   /// - Parameters:
-   ///   - view: 相对视图
-   ///   - ratio: 比例
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWHeightEqual(_ toView: AnyObject?, ratio: CGFloat = 1) -> Self {
+    }
+
+
+    /// 设置高度按比例相等与指定视图
+    ///
+    /// - Parameters:
+    ///   - view: 相对视图
+    ///   - ratio: 比例
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWHeightEqual(_ toView: AnyObject?, ratio: CGFloat = 1) -> Self {
        return self.GWConstraintWithItem(self, attribute: .height, toItem: toView, toAttribute: .height, constant: 0, related: .equal, multiplier: ratio)
-   }
-   
-   /// 设置自动高度
-   ///
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWHeightAuto() -> Self {
+    }
+
+    /// 设置自动高度
+    ///
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWHeightAuto() -> Self {
        #if os(iOS) || os(tvOS)
            if let label = self as? UILabel {
                if label.numberOfLines != 0 {
@@ -345,197 +363,207 @@ extension GWMainLayout{
        }
        let toAttribute = GWLayoutAttribute.notAnAttribute
        return self.GWConstraintWithItem(self, attribute: .height, toItem: nil, toAttribute: toAttribute, constant: 0, related: .greaterThanOrEqual, multiplier: 1)
-   }
-   
-   /// 设置视图自身宽度与高度的比
-   ///
-   /// - Parameter ratio: 比例
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWWidthHeightRatio(_ ratio: CGFloat) -> Self {
+    }
+
+    /// 设置视图自身宽度与高度的比
+    ///
+    /// - Parameter ratio: 比例
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWWidthHeightRatio(_ ratio: CGFloat) -> Self {
        let toAttribute = GWLayoutAttribute.height
        return self.GWConstraintWithItem(self, attribute: .width, toItem: self, toAttribute: toAttribute, constant: 0, related: .equal, multiplier: ratio)
-   }
-   
-   /// 设置中心x(默认相对父视图)
-   ///
-   /// - Parameter x: 中心x偏移量（0与父视图中心x重合）
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWCenterX(_ x: CGFloat) -> Self {
+    }
+
+    /// 设置中心x(默认相对父视图)
+    ///
+    /// - Parameter x: 中心x偏移量（0与父视图中心x重合）
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWCenterX(_ x: CGFloat) -> Self {
        return self.GWConstraintWithItem(self, attribute: .centerX, toItem: GWGetSuperview(), toAttribute: .centerX, constant: x)
-   }
-   
-   /// 设置中心x相等并偏移x与指定视图
-   ///
-   /// - Parameters:
-   ///   - toView: 相对视图
-   ///   - x: x偏移量（0与指定视图重合）
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWCenterXEqual(_ toView: AnyObject?,_ x: CGFloat = 0) -> Self {
+    }
+
+    /// 设置中心x相等并偏移x与指定视图
+    ///
+    /// - Parameters:
+    ///   - toView: 相对视图
+    ///   - x: x偏移量（0与指定视图重合）
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWCenterXEqual(_ toView: AnyObject?,_ x: CGFloat = 0) -> Self {
        return self.GWConstraintWithItem(self, attribute: .centerX, toItem: toView, toAttribute: .centerX, constant: x)
-   }
-   
-   /// 设置中心y偏移(默认相对父视图)
-   ///
-   /// - Parameter y: 中心y坐标偏移量（0与父视图重合）
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWCenterY(_ y: CGFloat) -> Self {
+    }
+
+    /// 设置中心y偏移(默认相对父视图)
+    ///
+    /// - Parameter y: 中心y坐标偏移量（0与父视图重合）
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWCenterY(_ y: CGFloat) -> Self {
        return self.GWConstraintWithItem(self, attribute: .centerY, toItem: GWGetSuperview(), toAttribute: .centerY, constant: y)
-   }
-   
+    }
+
     /// 设置中心y相等并偏移x与指定视图
       ///
       /// - Parameters:
       ///   - toView: 相对视图
       ///   - y: y偏移量（0与指定视图中心y重合）
       /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWCenterYEqual(_ toView: AnyObject?,_ y: CGFloat = 0) -> Self {
-       return self.GWConstraintWithItem(self, attribute: .centerY, toItem: toView, toAttribute: .centerY, constant: y)
-   }
-   
-   /// 设置顶部基线边距(默认相对父视图,相当于y)
-   ///
-   /// - Parameter space: 顶部基线边距
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWFirstBaseLine(_ space: CGFloat) -> Self {
-       return self.GWConstraintWithItem(self, attribute: .firstBaseline, toItem: GWGetSuperview(), toAttribute: .firstBaseline, constant: 0 - space)
-   }
-   
-   /// 设置顶部基线边距与指定视图
-   ///
-   /// - Parameters:
-   ///   - space: 间距
-   ///   - toView: 指定视图
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWFirstBaseLine(_ space: CGFloat, toView: AnyObject?) -> Self {
-       var toAttribute = GWLayoutAttribute.lastBaseline
-       if !GWSameSuperView(view1: toView, view2: self).1 {
-           toAttribute = .firstBaseline
-       }
-       return self.GWConstraintWithItem(self, attribute: .firstBaseline, toItem: toView, toAttribute: toAttribute, constant: 0-space)
-   }
-   
-   /// 设置顶部基线边距相等并偏移与指定视图
-   ///
-   /// - Parameters:
-   ///   - view: 相对视图
-   ///   - offset: 偏移量
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWFirstBaseLineEqual(_ toView: AnyObject?, offset: CGFloat = 0) -> Self {
-       return self.GWConstraintWithItem(self, attribute: .firstBaseline, toItem: toView, toAttribute: .firstBaseline, constant: offset)
-   }
-   
-   /// 设置底部基线边距(默认相对父视图)
-   ///
-   /// - Parameter space: 间隙
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWLastBaseLine(_ space: CGFloat) -> Self {
-       return self.GWConstraintWithItem(self, attribute: .lastBaseline, toItem: GWGetSuperview(), toAttribute: .lastBaseline, constant: 0 - space)
-   }
-   
-   /// 设置底部基线边距与指定视图
-   ///
-   /// - Parameters:
-   ///   - space: 间距
-   ///   - toView: 相对视图
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWLastBaseLine(_ space: CGFloat, toView: AnyObject?) -> Self {
-       var toAttribute = GWLayoutAttribute.firstBaseline
-       if !GWSameSuperView(view1: toView, view2: self).1 {
-           toAttribute = .lastBaseline
-       }
-       return self.GWConstraintWithItem(self, attribute: .lastBaseline, toItem: toView, toAttribute: toAttribute, constant: 0-space)
-   }
-   
-   /// 设置底部基线边距相等并偏移与指定视图
-   ///
-   /// - Parameters:
-   ///   - view: 相对视图
-   ///   - offset: 偏移量
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWLastBaseLineEqual(_ toView: AnyObject?, offset: CGFloat = 0) -> Self {
-       return self.GWConstraintWithItem(self, attribute: .lastBaseline, toItem: toView, toAttribute: .lastBaseline, constant: 0.0 - offset)
-   }
-   
-   /// 设置中心偏移(默认相对父视图)x,y = 0 与父视图中心重合
-   ///
-   /// - Parameters:
-   ///   - x: 中心x偏移量
-   ///   - y: 中心y偏移量
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWCenter(_ x: CGFloat, y: CGFloat) -> Self {
-       return self.GWCenterX(x).GWCenterY(y)
-   }
-   
-   /// 设置中心偏移x,y = 0 与指定视图中心重合
-   ///
-   /// - Parameters:
-   ///   - x: 中心x偏移量
-   ///   - y: 中心y偏移量
-   ///   - toView: 指定视图
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWCenter(_ x: CGFloat, y: CGFloat, toView: AnyObject?) -> Self {
-       return self.GWCenterXEqual(toView, x).GWCenterYEqual(toView, y)
-   }
-   
-   /// 设置中心相等与指定视图
-   ///
-   /// - Parameter view: 相对视图
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWCenterEqual(_ toView: AnyObject?) -> Self {
-       return self.GWCenterXEqual(toView).GWCenterYEqual(toView)
-   }
-   
-   /// 设置frame(默认相对父视图)
-   ///
-   /// - Parameters:
-   ///   - left: 左边距
-   ///   - top: 顶边距
-   ///   - width: 宽度
-   ///   - height: 高度
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWFrame(_ left: CGFloat, top: CGFloat, width: CGFloat, height: CGFloat) -> Self {
-       return self.GWLeft(left).GWTop(top).GWWidth(width).GWHeight(height)
-   }
-   
-   /// 设置frame与指定视图
-   ///
-   /// - Parameters:
-   ///   - left: 左边距
-   ///   - top: 顶边距
-   ///   - width: 宽度
-   ///   - height: 高度
-   ///   - toView: 相对视图
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWFrame(_ left: CGFloat, top: CGFloat, width: CGFloat, height: CGFloat, toView: AnyObject?) -> Self {
-       return self.GWLeft(left, toView: toView).GWTop(top, toView: toView).GWWidth(width).GWHeight(height)
-   }
-   
-   
-   /// 设置frame与view相同
-   ///
-   /// - Parameter view: 相对视图
-   /// - Returns: 返回当前视图
     @discardableResult
-   public func GWFrameEqual(_ view: AnyObject?) -> Self {
+    public func GWCenterYEqual(_ toView: AnyObject?,_ y: CGFloat = 0) -> Self {
+       return self.GWConstraintWithItem(self, attribute: .centerY, toItem: toView, toAttribute: .centerY, constant: y)
+    }
+
+    /// 设置顶部基线边距(默认相对父视图,相当于y)
+    ///
+    /// - Parameter space: 顶部基线边距
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWFirstBaseLine(_ space: CGFloat) -> Self {
+       return self.GWConstraintWithItem(self, attribute: .firstBaseline, toItem: GWGetSuperview(), toAttribute: .firstBaseline, constant: 0 - space)
+    }
+
+    /// 设置顶部基线边距与指定视图
+    ///
+    /// - Parameters:
+    ///   - space: 间距
+    ///   - toView: 指定视图
+    /// - Returns: 返回当前视图
+    //   @discardableResult
+    //   public func GWFirstBaseLine(_ space: CGFloat, toView: AnyObject?) -> Self {
+    //       var toAttribute = GWLayoutAttribute.lastBaseline
+    //       if !GWSameSuperView(view1: toView, view2: self).1 {
+    //           toAttribute = .firstBaseline
+    //       }
+    //       return self.GWConstraintWithItem(self, attribute: .firstBaseline, toItem: toView, toAttribute: toAttribute, constant: 0-space)
+    //   }
+
+    /// 设置顶部基线边距相等并偏移与指定视图
+    ///
+    /// - Parameters:
+    ///   - view: 相对视图
+    ///   - offset: 偏移量
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWFirstBaseLineEqual(_ toView: AnyObject?, offset: CGFloat = 0) -> Self {
+       return self.GWConstraintWithItem(self, attribute: .firstBaseline, toItem: toView, toAttribute: .firstBaseline, constant: offset)
+    }
+
+    /// 设置底部基线边距(默认相对父视图)
+    ///
+    /// - Parameter space: 间隙
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWLastBaseLine(_ space: CGFloat) -> Self {
+       return self.GWConstraintWithItem(self, attribute: .lastBaseline, toItem: GWGetSuperview(), toAttribute: .lastBaseline, constant: 0 - space)
+    }
+
+    /// 设置底部基线边距与指定视图
+    ///
+    /// - Parameters:
+    ///   - space: 间距
+    ///   - toView: 相对视图
+    /// - Returns: 返回当前视图
+
+
+    /// 设置底部基线边距与指定视图顶部距离
+    ///
+    /// - Parameters:
+    ///   - space: 间距
+    ///   - toView: 相对视图
+    ///   - toViewFont: 相对视图font
+    /// - Returns:  返回当前视图
+    @discardableResult
+    public func GWLastBaseLine(_ space: CGFloat, toView: AnyObject? ,toViewFont:UIFont?=nil) -> Self {
+        let toAttribute = GWLayoutAttribute.top
+        var offset = space
+        if toViewFont != nil {
+            offset -= toViewFont?.GWFontBaseTopY() ?? 0
+        }
+       return self.GWConstraintWithItem(self, attribute: .lastBaseline, toItem: toView, toAttribute: toAttribute, constant:0-offset)
+    }
+
+    /// 设置底部基线边距相等并偏移与指定视图
+    ///
+    /// - Parameters:
+    ///   - view: 相对视图
+    ///   - offset: 偏移量
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWLastBaseLineEqual(_ toView: AnyObject?, offset: CGFloat = 0) -> Self {
+       return self.GWConstraintWithItem(self, attribute: .lastBaseline, toItem: toView, toAttribute: .lastBaseline, constant: 0.0 - offset)
+    }
+
+    /// 设置中心偏移(默认相对父视图)x,y = 0 与父视图中心重合
+    ///
+    /// - Parameters:
+    ///   - x: 中心x偏移量
+    ///   - y: 中心y偏移量
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWCenter(_ x: CGFloat, y: CGFloat) -> Self {
+       return self.GWCenterX(x).GWCenterY(y)
+    }
+
+    /// 设置中心偏移x,y = 0 与指定视图中心重合
+    ///
+    /// - Parameters:
+    ///   - x: 中心x偏移量
+    ///   - y: 中心y偏移量
+    ///   - toView: 指定视图
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWCenter(_ x: CGFloat, y: CGFloat, toView: AnyObject?) -> Self {
+       return self.GWCenterXEqual(toView, x).GWCenterYEqual(toView, y)
+    }
+
+    /// 设置中心相等与指定视图
+    ///
+    /// - Parameter view: 相对视图
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWCenterEqual(_ toView: AnyObject?) -> Self {
+       return self.GWCenterXEqual(toView).GWCenterYEqual(toView)
+    }
+
+    /// 设置frame(默认相对父视图)
+    ///
+    /// - Parameters:
+    ///   - left: 左边距
+    ///   - top: 顶边距
+    ///   - width: 宽度
+    ///   - height: 高度
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWFrame(_ left: CGFloat, top: CGFloat, width: CGFloat, height: CGFloat) -> Self {
+       return self.GWLeft(left).GWTop(top).GWWidth(width).GWHeight(height)
+    }
+
+    /// 设置frame与指定视图
+    ///
+    /// - Parameters:
+    ///   - left: 左边距
+    ///   - top: 顶边距
+    ///   - width: 宽度
+    ///   - height: 高度
+    ///   - toView: 相对视图
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWFrame(_ left: CGFloat, top: CGFloat, width: CGFloat, height: CGFloat, toView: AnyObject?) -> Self {
+       return self.GWLeft(left, toView: toView).GWTop(top, toView: toView).GWWidth(width).GWHeight(height)
+    }
+
+
+    /// 设置frame与view相同
+    ///
+    /// - Parameter view: 相对视图
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWFrameEqual(_ view: AnyObject?) -> Self {
        return self.GWLeftEqual(view).GWTopEqual(view).GWSizeEqual(view)
-   }
-   
+    }
+
     /// 设置bounds与view相同
     ///
     /// - Parameter view: 相对视图
@@ -544,115 +572,115 @@ extension GWMainLayout{
     public func GWBoundsEqual(_ view: AnyObject?) -> Self {
         return self.GWLeftEqual(view).GWTopEqual(view).GWRightEqual(view).GWBottomEqual(view)
     }
-    
-   /// 设置size
-   ///
-   /// - Parameters:
-   ///   - width: 宽度
-   ///   - height: 高度
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWSize(_ width: CGFloat, height: CGFloat) -> Self {
+
+    /// 设置size
+    ///
+    /// - Parameters:
+    ///   - width: 宽度
+    ///   - height: 高度
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWSize(_ width: CGFloat, height: CGFloat) -> Self {
        return self.GWWidth(width).GWHeight(height)
-   }
-   
-   /// 设置size相等与指定视图
-   ///
-   /// - Parameter view: 相对视图
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWSizeEqual(_ view: AnyObject?) -> Self {
+    }
+
+    /// 设置size相等与指定视图
+    ///
+    /// - Parameter view: 相对视图
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWSizeEqual(_ view: AnyObject?) -> Self {
        return self.GWWidthEqual(view).GWHeightEqual(view)
-   }
-   
-   /// 设置frame (默认相对父视图，宽高自动)
-   ///
-   /// - Parameters:
-   ///   - left: 左边距
-   ///   - top: 顶边距
-   ///   - right: 右边距
-   ///   - bottom: 底边距
-   ///   - isSafe: 是否使用安全边界
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWAutoSize(left: CGFloat, top: CGFloat, right: CGFloat, bottom: CGFloat, _ isSafe: Bool = false) -> Self {
+    }
+
+    /// 设置frame (默认相对父视图，宽高自动)
+    ///
+    /// - Parameters:
+    ///   - left: 左边距
+    ///   - top: 顶边距
+    ///   - right: 右边距
+    ///   - bottom: 底边距
+    ///   - isSafe: 是否使用安全边界
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWAutoSize(left: CGFloat, top: CGFloat, right: CGFloat, bottom: CGFloat, _ isSafe: Bool = false) -> Self {
        return self.GWLeft(left, isSafe).GWTop(top, isSafe).GWRight(right, isSafe).GWBottom(bottom, isSafe)
-   }
-   
-   /// 设置frame与指定视图（宽高自动）
-   ///
-   /// - Parameters:
-   ///   - left: 左边距
-   ///   - top: 顶边距
-   ///   - right: 右边距
-   ///   - bottom: 底边距
-   ///   - toView: 相对视图
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWAutoSize(left: CGFloat, top: CGFloat, right: CGFloat, bottom: CGFloat, toView: AnyObject?) -> Self {
+    }
+
+    /// 设置frame与指定视图（宽高自动）
+    ///
+    /// - Parameters:
+    ///   - left: 左边距
+    ///   - top: 顶边距
+    ///   - right: 右边距
+    ///   - bottom: 底边距
+    ///   - toView: 相对视图
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWAutoSize(left: CGFloat, top: CGFloat, right: CGFloat, bottom: CGFloat, toView: AnyObject?) -> Self {
        return self.GWLeft(left, toView: toView).GWTop(top, toView: toView).GWRight(right, toView: toView).GWBottom(bottom, toView: toView)
-   }
-   
-   /// 设置frame (默认相对父视图，宽度自动)
-   ///
-   /// - Parameters:
-   ///   - left: 左边距
-   ///   - top: 顶边距
-   ///   - right: 右边距
-   ///   - height: 高度
-   ///   - isSafe: 是否使用安全边界
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWAutoWidth(left: CGFloat, top: CGFloat, right: CGFloat, height: CGFloat, _ isSafe: Bool = false) -> Self {
+    }
+
+    /// 设置frame (默认相对父视图，宽度自动)
+    ///
+    /// - Parameters:
+    ///   - left: 左边距
+    ///   - top: 顶边距
+    ///   - right: 右边距
+    ///   - height: 高度
+    ///   - isSafe: 是否使用安全边界
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWAutoWidth(left: CGFloat, top: CGFloat, right: CGFloat, height: CGFloat, _ isSafe: Bool = false) -> Self {
        return self.GWLeft(left, isSafe).GWTop(top, isSafe).GWRight(right, isSafe).GWHeight(height)
-   }
-   
-   /// 设置frame与指定视图（宽度自动）
-   ///
-   /// - Parameters:
-   ///   - left: 左边距
-   ///   - top: 顶边距
-   ///   - right: 右边距
-   ///   - height: 高度
-   ///   - toView: 相对视图
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWAutoWidth(left: CGFloat, top: CGFloat, right: CGFloat, height: CGFloat, toView: AnyObject?) -> Self {
+    }
+
+    /// 设置frame与指定视图（宽度自动）
+    ///
+    /// - Parameters:
+    ///   - left: 左边距
+    ///   - top: 顶边距
+    ///   - right: 右边距
+    ///   - height: 高度
+    ///   - toView: 相对视图
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWAutoWidth(left: CGFloat, top: CGFloat, right: CGFloat, height: CGFloat, toView: AnyObject?) -> Self {
        return self.GWLeft(left, toView: toView).GWTop(top, toView: toView).GWRight(right, toView: toView).GWHeight(height)
-   }
-   
-   /// 设置frame (默认相对父视图，高度自动)
-   ///
-   /// - Parameters:
-   ///   - left: 左边距
-   ///   - top: 顶边距
-   ///   - width: 宽度
-   ///   - bottom: 底边距
-   ///   - isSafe: 是否使用安全边界
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWAutoHeight(left: CGFloat, top: CGFloat, width: CGFloat, bottom: CGFloat, _ isSafe: Bool = false) -> Self {
+    }
+
+    /// 设置frame (默认相对父视图，高度自动)
+    ///
+    /// - Parameters:
+    ///   - left: 左边距
+    ///   - top: 顶边距
+    ///   - width: 宽度
+    ///   - bottom: 底边距
+    ///   - isSafe: 是否使用安全边界
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWAutoHeight(left: CGFloat, top: CGFloat, width: CGFloat, bottom: CGFloat, _ isSafe: Bool = false) -> Self {
        return self.GWLeft(left, isSafe).GWTop(top, isSafe).GWWidth(width).GWBottom(bottom, isSafe)
-   }
-   
-   /// 设置frame与指定视图（自动高度）
-   ///
-   /// - Parameters:
-   ///   - left: 左边距
-   ///   - top: 顶边距
-   ///   - width: 宽度
-   ///   - bottom: 底边距
-   ///   - toView: 相对视图
-   /// - Returns: 返回当前视图
-   @discardableResult
-   public func GWAutoHeight(left: CGFloat, top: CGFloat, width: CGFloat, bottom: CGFloat, toView: AnyObject?) -> Self {
+    }
+
+    /// 设置frame与指定视图（自动高度）
+    ///
+    /// - Parameters:
+    ///   - left: 左边距
+    ///   - top: 顶边距
+    ///   - width: 宽度
+    ///   - bottom: 底边距
+    ///   - toView: 相对视图
+    /// - Returns: 返回当前视图
+    @discardableResult
+    public func GWAutoHeight(left: CGFloat, top: CGFloat, width: CGFloat, bottom: CGFloat, toView: AnyObject?) -> Self {
        return self.GWLeft(left, toView: toView).GWTop(top, toView: toView).GWWidth(width).GWBottom(bottom, toView: toView)
-   }
+    }
 }
 
 //MARK: -私有方法-
 extension GWMainLayout{
-    
+
     fileprivate func GWHandleConstraintsRelation(_ relation: GWLayoutRelation) -> Self {
         if let constraints = self.currentConstraint, constraints.relation != relation {
              let tmpConstraints = NSLayoutConstraint(item: constraints.firstItem ?? 0, attribute:  constraints.firstAttribute, relatedBy: relation, toItem: constraints.secondItem, attribute: constraints.secondAttribute, multiplier: constraints.multiplier, constant: constraints.constant)
@@ -666,7 +694,7 @@ extension GWMainLayout{
         }
         return self
     }
-    
+
     fileprivate func GWCheckSameAttribute(_ attr:NSLayoutConstraint,
                                         _ item: AnyObject?,
                                         attribute: GWLayoutAttribute,
@@ -688,7 +716,7 @@ extension GWMainLayout{
         }
         return false;
     }
-    
+
     fileprivate func GWConstraintWithItem(_ item: AnyObject?,
                                         attribute: GWLayoutAttribute,
                                         toItem: AnyObject?,
@@ -783,6 +811,13 @@ extension GWMainLayout{
             GWRemoveCache(constraint: layoutConstraint)
             self.GWRemoveLayoutConstraint(constraints: [firstAttribute.GWGetAttributeValue(related).rawValue:layoutConstraint])
         }
+//        else if twoAttribute != .notAnAttribute,isGWLayoutGuide(view: toItem), let twoItem = GWGetView(toItem),let layoutConstraint = twoItem.GWGetCuttentLayoutConstraint(twoAttribute.GWGetAttributeValue(related)){
+//            if GWCheckSameAttribute(layoutConstraint, toItem, attribute: twoAttribute, toAttribute: firstAttribute, constant: constant, related: related, toItem: item, multiplier: multiplier) {
+//                return self
+//            }
+//            GWRemoveCache(constraint: layoutConstraint)
+//            self.GWRemoveLayoutConstraint(constraints: [twoAttribute.GWGetAttributeValue(related).rawValue:layoutConstraint])
+//        }
         
         if let superView = GWMainSuperView(view1: toItem, view2: item),let layout = GWLayoutAttribute(rawValue: attribute.rawValue) {
             let constraint = NSLayoutConstraint(item: item!,
@@ -798,13 +833,13 @@ extension GWMainLayout{
         }
         return self
     }
-    
+
     @discardableResult
     fileprivate func GWRemoveCache(constraint: NSLayoutConstraint?) -> Self {
         GWMainViewConstraint(constraint)?.removeConstraint(constraint!)
         return self
     }
-    
+
     /// 获取约束对象视图
     ///
     /// - Parameter constraint: 约束对象
@@ -832,14 +867,14 @@ extension GWMainLayout{
         }
         return view
     }
-    
+
     fileprivate func isGWLayoutGuide(view:AnyObject?) -> Bool{
         if #available(iOS 9.0, *) {
             return !(view != nil && view is GWLayoutGuide)
         }
         return true
     }
-    
+
     fileprivate func GWMainSuperView(view1:AnyObject?,view2:AnyObject?) -> GWView? {
         let isView1 = isGWLayoutGuide(view: view1)
         let isView2 = isGWLayoutGuide(view: view2)
@@ -909,7 +944,7 @@ extension GWMainLayout{
         }
         return nil
     }
-    
+
     fileprivate func GWSameSuperView(view1:AnyObject?,view2:AnyObject?) -> (GWView?,Bool){
         let isView1 = isGWLayoutGuide(view: view1)
         let isView2 = isGWLayoutGuide(view: view2)
@@ -948,7 +983,7 @@ extension GWMainLayout{
         }
         return (nil, false)
     }
-    
+
     fileprivate func GWCheckSubSuperView(supV:GWView?,subV:GWView?)->GWView?{
         var superView: GWView?
         if let spv = supV, let sbv = subV, let sbvspv = sbv.superview, spv !== sbv {
@@ -974,7 +1009,7 @@ extension GWMainLayout{
         }
         return superView
     }
-    
+
     fileprivate func GWCheckSameSuperview(_ view1:GWView?,_ view2:GWView?) -> Bool {
         var tmpSingleView: GWView? = view2
         while let tempSingleSuperview = tmpSingleView?.superview {
@@ -986,9 +1021,9 @@ extension GWMainLayout{
         }
         return false
     }
-    
-    
-    
+
+
+
     fileprivate func GWGetOwningview(_ object: AnyObject? = nil) -> GWView? {
         if let v = object as? GWView {
             return v
@@ -1006,7 +1041,7 @@ extension GWMainLayout{
         
         return nil
     }
-    
+
     fileprivate func GWGetSuperview(_ object: AnyObject? = nil) -> GWView? {
         if let v = object as? GWView {
             return v.superview
@@ -1026,12 +1061,12 @@ extension GWMainLayout{
         
         return GWGetView(object)?.superview
     }
-    
+
     fileprivate func GWGetView(_ view:AnyObject? = nil) -> GWView? {
         guard let v = view as? GWView else { return self as? GWView }
         return v
     }
-    
+
     @available(iOS 9.0, *)
     fileprivate func GWGetLayoutGuide(_ object: AnyObject? = nil) -> GWLayoutGuide? {
         if let g = object as? GWLayoutGuide {
@@ -1039,7 +1074,7 @@ extension GWMainLayout{
         }
         return self as? GWLayoutGuide
     }
-    
+
     fileprivate func GWGetCuttentLayoutConstraint(_ name: GWLayoutAttribute) -> NSLayoutConstraint?{
         let constraintsSet = self.GWConstraintsSet
         for (_,value) in constraintsSet.enumerated() {
@@ -1049,15 +1084,15 @@ extension GWMainLayout{
         }
         return nil
     }
-    
+
     fileprivate func GWAddLayoutConstraint(constraints: [Int:NSLayoutConstraint]) {
         self.GWConstraintsSet.add(constraints)
     }
-    
+
     fileprivate func GWRemoveLayoutConstraint(constraints: [Int:NSLayoutConstraint]) {
         self.GWConstraintsSet.remove(constraints)
     }
-    
+
     fileprivate var GWConstraintsSet: NSMutableSet {
         let constraintsSet: NSMutableSet
         
@@ -1069,7 +1104,7 @@ extension GWMainLayout{
         }
         return constraintsSet
     }
-    
+
     /// 当前添加的约束对象
     private var currentConstraint: NSLayoutConstraint? {
         set {
@@ -1085,3 +1120,9 @@ extension GWMainLayout{
     }
 }
 
+//MARK: UIFont
+extension UIFont{
+    func GWFontBaseTopY() -> CGFloat {
+        return self.ascender - self.capHeight
+    }
+}
