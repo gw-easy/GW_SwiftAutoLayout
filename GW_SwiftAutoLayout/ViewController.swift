@@ -25,7 +25,7 @@ class ViewController: UIViewController {
         lab1.text = "史蒂夫届发就哦色圣诞节铁佛我"
         lab1.font = UIFont.systemFont(ofSize: 20)
         lab2.text = "势均力敌小客车距离速度快减肥减肥罗萨蒂就发水淀粉势均力敌小客车距离速度快减肥减肥罗萨蒂就发水淀粉势均力敌小客车距离速度快减肥减肥罗萨蒂就发水淀粉势均力敌小客车距离速度快减肥减肥罗萨蒂就发水淀粉势均力敌小客车距离速度快减肥减肥罗萨蒂就发水淀粉"
-        lab2.font = UIFont.systemFont(ofSize: 13)
+//        lab2.font = UIFont.systemFont(ofSize: 13)
         
         view.addSubview(lab1)
         view.addSubview(lab2)
